@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bumble Bee Application</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<style>
+    /* SECTIONS */
+
+            .headline {
+                width: 100%;
+                height: 50vh;
+                min-height: 350px;
+                background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)),
+                    url("aboutus.jpg");
+                background-size: cover;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .features {
+                width: 100%;
+                height: auto;
+                background-color: #f1f1f1;
+                display: flex;
+                padding: 50px 20px;
+                justify-content: space-around;
+            }
+
+            .feature-container {
+                flex-basis: 30%;
+                margin-top: 10px;
+            }
+
+            .feature-container p {
+                color: #000;
+                text-align: center;
+                line-height: 1.4;
+                margin-bottom: 15px;
+            }
+
+            .feature-container img {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            /* SEARCH FUNCTION */
+
+            #search-icon {
+                font-size: 0.9rem;
+                margin-top: 3px;
+                margin-left: 15px;
+                transition: color 0.3s ease-out;
+            }
+
+            #search-icon:hover {
+                color: #3498db;
+                cursor: pointer;
+            }
+
+            .search {
+                transform: translate(-35%);
+                -webkit-transform: translate(-35%);
+                transition: transform 0.7s ease-in-out;
+                color: #3498db;
+            }
+
+            .no-search {
+                transform: translate(0);
+                transition: transform 0.7s ease-in-out;
+            }
+
+            .search-input {
+                position: absolute;
+                top: -4px;
+                right: -125px;
+                opacity: 0;
+                z-index: -1;
+                transition: opacity 0.6s ease;
+            }
+
+            .search-active {
+                opacity: 1;
+                z-index: 0;
+            }
+
+            input {
+                border: 0;
+                border-left: 1px solid #ccc;
+                border-radius: 0; /* FOR SAFARI */
+                outline: 0;
+                padding: 5px;
+            }
+
+            /* MOBILE MENU & ANIMATION */
+
+            .menu-toggle .bar {
+                width: 25px;
+                height: 3px;
+                background-color: #3f3f3f;
+                margin: 5px auto;
+                -webkit-transition: all 0.3s ease-in-out;
+                -o-transition: all 0.3s ease-in-out;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .menu-toggle {
+                justify-self: end;
+                margin-right: 25px;
+                display: none;
+            }
+
+            .menu-toggle:hover {
+                cursor: pointer;
+            }
+
+            #mobile-menu.is-active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            #mobile-menu.is-active .bar:nth-child(1) {
+                -webkit-transform: translateY(8px) rotate(45deg);
+                -ms-transform: translateY(8px) rotate(45deg);
+                -o-transform: translateY(8px) rotate(45deg);
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            #mobile-menu.is-active .bar:nth-child(3) {
+                -webkit-transform: translateY(-8px) rotate(-45deg);
+                -ms-transform: translateY(-8px) rotate(-45deg);
+                -o-transform: translateY(-8px) rotate(-45deg);
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            /* KEYFRAME ANIMATIONS */
+
+            @-webkit-keyframes gradbar {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            @-moz-keyframes gradbar {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            @keyframes gradbar {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            /* Media Queries */
+
+            /* Mobile Devices - Phones/Tablets */
+
+            @media only screen and (max-width: 720px) {
+                .features {
+                    flex-direction: column;
+                    padding: 50px;
+                }
+
+                /* MOBILE HEADINGS */
+
+                h1 {
+                    font-size: 1.9rem;
+                }
+
+                h2 {
+                    font-size: 1rem;
+                }
+
+                p {
+                    font-size: 0.8rem;
+                }
+
+                /* MOBILE NAVIGATION */
+
+                .navbar ul {
+                    display: flex;
+                    flex-direction: column;
+                    position: fixed;
+                    justify-content: start;
+                    top: 55px;
+                    background-color: #fff;
+                    width: 100%;
+                    height: calc(100vh - 55px);
+                    transform: translate(-101%);
+                    text-align: center;
+                    overflow: hidden;
+                }
+
+                .navbar li {
+                    padding: 15px;
+                }
+
+                .navbar li:first-child {
+                    margin-top: 50px;
+                }
+
+                .navbar li a {
+                    font-size: 1rem;
+                }
+
+                .menu-toggle,
+                .bar {
+                    display: block;
+                    cursor: pointer;
+                }
+
+                .mobile-nav {
+                    transform: translate(0%) !important;
+                }
+
+                /* SECTIONS */
+
+                .headline {
+                    height: 20vh;
+                }
+
+                .feature-container p {
+                    margin-bottom: 25px;
+                }
+
+                .feature-container {
+                    margin-top: 20px;
+                }
+
+                .feature-container:nth-child(2) {
+                    order: -1;
+                }
+
+                /* SEARCH DISABLED ON MOBILE */
+
+                #search-icon {
+                    display: none;
+                }
+
+                .search-input {
+                    display: none;
+                }
+            }
+            @import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700);
+            body {
+                font-family:Rubik,sans-serif;
+                position:relative;
+                font-weight:400;
+                font-size:15px
+            }
+            ul {
+                padding:0;
+                margin:0
+            }
+            li {
+                list-style:none
+            }
+            a:focus,a:hover {
+                text-decoration:none;
+                -webkit-transition:.3s ease;
+                -o-transition:.3s ease;
+                transition:.3s ease
+            }
+            a:focus {
+                outline:0
+            }
+            img {
+                max-width:100%
+            }
+            p {
+                font-size:16px;
+                line-height:30px;
+                color:#898b96;
+                font-weight:300
+            }
+            h4 {
+                font-family:Rubik,sans-serif;
+                margin:0;
+                font-weight:400;
+                padding:0;
+                color:#363940
+            }
+            a {
+                color:#5867dd
+            }
+            .no-padding {
+                padding:0!important
+            }
+            .go_top {
+                line-height:40px;
+                cursor:pointer;
+                width:40px;
+                background:#5867dd;
+                color:#fff;
+                position:fixed;
+                -webkit-box-shadow:0 4px 4px rgba(0,0,0,.1);
+                box-shadow:0 4px 4px rgba(0,0,0,.1);
+                -webkit-border-radius:50%;
+                border-radius:50%;
+                right:-webkit-calc((100% - 1140px)/ 2);
+                right:calc((100% - 1140px)/ 2);
+                z-index:111;
+                bottom:80px;
+                text-align:center
+            }
+            .go_top span {
+                display:inline-block
+            }
+            .footer-big {
+                padding:105px 0 65px 0
+            }
+            .footer-big .footer-widget {
+                margin-bottom:40px
+            }
+            .footer--light {
+                background:#e7e8ed
+            }
+            .footer-big .footer-menu ul li a,.footer-big p,.footer-big ul li {
+                color:#898b96
+            }
+            .footer-menu {
+                padding-left:48px
+            }
+            .footer-menu ul li a {
+                font-size:15px;
+                line-height:32px;
+                -webkit-transition:.3s;
+                -o-transition:.3s;
+                transition:.3s
+            }
+            .footer-menu ul li a:hover {
+                color:#5867dd
+            }
+            .footer-menu--1 {
+                width:100%
+            }
+            .footer-widget-title {
+                line-height:42px;
+                margin-bottom:10px;
+                font-size:18px
+            }
+            .mini-footer {
+                background:#192027;
+                text-align:center;
+                padding:32px 0
+            }
+            .mini-footer p {
+                margin:0;
+                line-height:26px;
+                font-size:15px;
+                color:#999
+            }
+            .mini-footer p a {
+                color:#5867dd
+            }
+            .mini-footer p a:hover {
+                color:#34bfa3
+            }
+            .widget-about img {
+                display:block;
+                margin-bottom:30px
+            }
+            .widget-about p {
+                font-weight:400
+            }
+            .widget-about .contact-details {
+                margin:30px 0 0 0
+            }
+            .widget-about .contact-details li {
+                margin-bottom:10px
+            }
+            .widget-about .contact-details li:last-child {
+                margin-bottom:0
+            }
+            .widget-about .contact-details li span {
+                padding-right:12px
+            }
+            .widget-about .contact-details li a {
+                color:#5867dd
+            }
+            @media (max-width:991px) {
+                .footer-menu {
+                    padding-left:0
+                }
+            }
+</style>
+
+<div class="container">
+<div class="row">
+<h1>Bumble Bee Application</h1>
+<p>Welcome to the world of Buy Now,Pay Later! Enjoy the interest free installments with a debit card or credit card.</p>
+</div>
+
+<div class="row">
+<div class="col-lg-3">
+<a th:href="@{'/Product'}" class="btn btn-primary btn-sm mb-3">Manage Product details</a>
+<a th:href="@{'/Customer'}" class="btn btn-primary btn-sm mb-3">Manage Customer details</a>
+<a th:href="@{'/aboutus'}" class="btn btn-primary btn-sm mb-3">About Us</a>
+<a th:href="@{'/contactus'}" class="btn btn-primary btn-sm mb-3">Contact US</a>
+<a th:href="@{'/addcustomer'}" class="btn btn-primary btn-sm mb-3">Manage Customer details</a>
+<a th:href="@{'/faq'}" class="btn btn-primary btn-sm mb-3">Frequently Asked Questions</a>
+
+</div></div>
+
+ <section class="headline">
+             
+            </section>
+            <section class="features">
+                <div class="feature-container">
+                    <img src="thumbsup.jpg" alt="Flexbox Feature">
+                    <h2>Pay how you like</h2>
+                    <p>Enjoy the convenience of getting what you want and paying for it over time - even with your debit card!</p>
+                </div>
+                <div class="feature-container">
+                    <img src="money.jpg" alt="Flexbox Feature">
+                    <h2>3 interest-free payments</h2>
+                    <p>Pay in 3 with Bumble Bee through our app. Bumble Bee is accepted anywhere, online and offline.</p>
+                </div>
+                <div class="feature-container">
+                    <img src="tick.png" alt="Flexbox Feature">
+                    <h2>Instant approval</h2>
+                    <p>Get instant approval to a spending limit that'll get you started off quickly.</p>
+                </div>
+            </section>
+            <footer class="footer-area footer--light">
+                <div class="footer-big">
+                    <!-- start .container -->
+                    <div class="container">
+
+                        <!-- end /.footer-big -->
+
+                        <div class="mini-footer">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="copyright-text">
+                                            <p>© 2018
+                                                <a href="#">Bumble Bee Comapany</a>. All rights reserved. Created by
+                                                <a href="#">Pavithra Madushani</a>
+                                            </p>
+                                        </div>
+
+                                        <div class="go_top">
+                                            <span class="icon-arrow-up"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </footer>
+
+                        <script>
+                            $("#search-icon").click(function () {
+                                $(".nav").toggleClass("search");
+                                $(".nav").toggleClass("no-search");
+                                $(".search-input").toggleClass("search-active");
+                            });
+
+                            $('.menu-toggle').click(function () {
+                                $(".nav").toggleClass("mobile-nav");
+                                $(this).toggleClass("is-active");
+                            });
+
+                        </script>
+                    </div>
+
+
+
+</div>
+    
+</body>
+</html>
