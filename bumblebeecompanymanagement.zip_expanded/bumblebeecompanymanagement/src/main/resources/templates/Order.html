@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css" />
+<script src= "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" ></script>
+ 
+</head>
+<body>
+<style>
+ body {
+              background-color:#fdfd96;
+            }
+</style>
+<div>
+<h2 >Inventory Mangement</h2>
+<br>
+<br>
+<br>
+<tr>
+<div align = "left" >
+
+</div>
+</tr>
+ 
+<div class="col-sm-8" align = "center">
+        <div class="panel-body" align = "center" >
+                
+                
+   <table class="table">
+<thead class="thead-dark">
+        <tr>
+            <th>Order Id</th>
+            <th>Customer Id</th>
+            <th>Total</th>
+             <th>Usedamount</th>
+              <th>Availableamount</th>
+              <th>Insatallment</th>
+             <th>edit</th>
+   
+   </tr>
+  </thead>
+  <tbody>
+      <tr  th:each="order : ${listorder}">
+<td th:text="${order.id}">Order ID</td>
+<td th:text="${order.cid}"> Customer ID</td>
+<td th:text="${order.total}">Total Amount</td>
+<td th:text="${order.usedamount}">Used Amount</td>
+<td th:text="${order.availableamount}">Available Amount</td>
+<td th:text="${order.installment}">Installment</td>
+ 
+<td>
+<a th:href="@{'/Order/edit/' + ${order.id}}">Edit</a>
+</td>        
+</tr>
+  </tbody>
+  </table>                
+</div>
+</div>
+ 
+</tr>
+ 
+</tbody>
+</table>
+<div>
+ 
+</body>
+</html>
